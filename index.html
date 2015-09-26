@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Friends</title>
+    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9ZjSeB4LZExOk1_WPEtgp8vTpt0kRhW4&libraries=places"></script>
+    <script type="text/javascript" src="js/moment.js"></script>
+    <script type="text/javascript" src="js/moment-timezone.js"></script>
+    <script type="text/javascript" src="js/JSONP-min.js"></script>
+
+    <script type="text/javascript" src="js/uikit.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/uikit.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+    <script type="text/javascript">
+        if (!String.prototype.format) {
+          String.prototype.format = function() {
+            var args = arguments;
+            return this.replace(/{(\d+)}/g, function(match, number) {
+              return typeof args[number] != 'undefined' ? args[number] : match;
+            });
+          };
+        }
+
+        var getJSON = function(url, successHandler, errorHandler) {
+          var xmlHttp = new XMLHttpRequest();
+          xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState == 4) {
+                if (xmlHttp.status == 200) {
+                  successHandler(xmlHttp.responseText);
+                } else {
+                  errorHandler(xmlHttp.status);
+                }
+            }
+          };
+
+          xmlHttp.open('GET', url, true);
+          xmlHttp.send(null);
+        };
+    </script>
+
+    <div class="app uk-cover">
+        <div class="friend">
+            <div class="information">
+                <img class="avatar" src="assets/avatar.png"/>
+                <div class="name-city">
+                    <h2>Bich Anh</h2>
+                    <h5>Rotterdam, Netherlands</h5>
+                </div>
+                <div class="date-time">
+                    <h2>5:36pm</h2>
+                    <h5>Saturday, September 5, 2015 (GMT+2)</h5>
+                </div>
+            </div>
+
+
+            <div class="forecast">
+                <div class="arrow"></div>
+                <div class="weather">
+                    <img class="weather-icon" src="assets/sunny.png">
+                    <div class="degree-summary">
+                        <h2>15&deg;</h2>
+                        <h5>Sunny</h5>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+        <div class="friend">
+            <div class="information">
+                <img class="avatar" src="assets/avatar.png"/>
+                <div class="name-city">
+                    <h2>Bich Anh</h2>
+                    <h5>Rotterdam, Netherlands</h5>
+                </div>
+                <div class="date-time">
+                    <h2>5:36pm</h2>
+                    <h5>Saturday, September 5, 2015 (GMT+2)</h5>
+                </div>
+            </div>
+
+            <div class="forecast">
+                <div class="arrow"></div>
+                <div class="weather">
+                    <img class="weather-icon" src="assets/sunny.png">
+                    <div class="degree-summary">
+                        <h2>15&deg;</h2>
+                        <h5>Rainy</h5>
+                    </div>
+                    <div class="details">
+                        <h5>Precipitation: 10%</h5>
+                        <h5>Humidity: 20%</h5>
+                        <h5>Wind: 30km/h</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="add-modal" id="animatedModal">
+        <!--THIS IS IMPORTANT! to close the modal, the class name has to match the name given on the ID  class="close-animatedModal" -->
+        <div class="close-button">
+            <i type="submit" class="close-animatedModal fa fa-times-circle-o fa-3x"></i>
+        </div>
+
+        <div class="modal-content">
+          <!--Your modal content goes here-->
+          <div id="the-basics">
+          <h1>What is your friend's name?</h1>
+          <input class="name" id="name" type="text" placeholder="Enter a name">
+          <h1>And where does he/she live?</h1>
+            <input class="typeahead" id="google" type="text">
+          </div>
+        </div>
+    </div>
+
+    <div class="add-button">
+        <i href="#animatedModal" id="addFriends" type="submit" class="fa fa-plus-circle fa-3x"></i>
+    </div>
+
+    <script type="text/javascript" src="js/animatedModal.min.js"></script>
+    <script type="text/javascript" src="js/ui.bindings.js"></script>
+    <script type="text/javascript" src="js/google.js"></script>
+    <script>
+        $("#addFriends").animatedModal({
+            color: '#a388bf',
+            animatedIn:'lightSpeedIn',
+            animatedOut:'bounceOutDown',
+        });
+    </script>
+</body>
+</html>
