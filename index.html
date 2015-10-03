@@ -39,7 +39,7 @@
     </script>
 
     <div ng-controller="FriendsListController as friends" class="app">
-        <div ng-repeat="friend in friends.friendList" on-finish-render="ngRepeatFinished" class="friend">
+        <div ng-repeat="friend in friends.friendList track by $index" on-finish-render="ngRepeatFinished" class="friend">
             <div class="information">
                 <img class="avatar" src="assets/avatar.png"/>
                 <div class="name-city">
@@ -111,7 +111,8 @@
               <h1>And where does he/she live?</h1>
                 <input class="typeahead" id="google" ng-model="friendCtrl.location" type="text">
               </div>
-              <input type="submit" id="submit" value="Submit" />
+              <input type="submit" id="submit" value="Submit"/>
+              <!-- <button class="uk-button" type="button" onclick="localStorage.clear()">Clear</button> -->
         </form>
 
     </div>
@@ -120,7 +121,6 @@
         <i href="#animatedModal" id="addFriends" type="submit" class="fa fa-plus-circle fa-3x"></i>
     </div>
 
-    <!-- <button class="uk-button" type="button" onclick="localStorage.clear()">Clear</button> -->
 
     <script type="text/javascript" src="js/animatedModal.min.js"></script>
     <script type="text/javascript" src="js/ui.bindings.js"></script>

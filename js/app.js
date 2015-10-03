@@ -48,7 +48,7 @@ var ICON = {
 
 
 
-    app.service('FriendDatabase', function() {
+    app.service('FriendDatabase', ['$rootScope', function($rootScope) {
         var friendList = (localStorage['friendList']) ? JSON.parse(localStorage['friendList']) : [];
 
         var updateTime = function() {
@@ -56,6 +56,25 @@ var ICON = {
             for (var i = 0; i < friendList.length; i++) {
                 friendList[i].now = now.tz(friendList[i].timezone).format('h:mm:ss a');
                 friendList[i].today = now.tz(friendList[i].timezone).format('dddd, MMMM Do, YYYY');
+            }
+        }();
+
+        var updateWeather = function() {
+            for (var i = 0; i < friendList.length; i++) {
+                (function(index) {
+                    var link = 'https://api.forecast.io/forecast/328c07219474afa5173466e4f594ac6e/{0},{1}?units=si&exclude=minutely,hourly,daily,flags';
+                    JSONP(link.format(friendList[index].location.latitude, friendList[index].location.longitude), function(json) {
+                        friendList[index].location.weather = {
+                            temperature: Math.round(json.currently.temperature),
+                            summary: json.currently.summary,
+                            icon: ICON[json.currently.icon]
+                        }
+                        console.dir(json);
+                        if (index == friendList.length - 1) {
+                            $rootScope.$broadcast('NewFriendAdded');
+                        }
+                    });
+                })(i);
             }
         }();
 
@@ -78,7 +97,7 @@ var ICON = {
             saveToLocal: saveToLocal,
             updateTime: updateTime
         };
-    });
+    }]);
 
     app.service('GoogleTimeZone', function($http) {
         var timezoneLink = 'https://maps.googleapis.com/maps/api/timezone/json?' +
