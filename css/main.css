@@ -16,6 +16,35 @@ html, body {
   line-height:20px;
 }
 
+.app {
+  display:table;
+  margin:auto;
+
+  padding-top:5em;
+  padding-bottom:5em;
+  padding-left:10em;
+  padding-right:10em;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.forecast h2, h5 {
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+  /*top: -10px;*/
+  /*padding-bottom: 2px;*/
+  /*line-height: 25px;*/
+}
+
 .app h2 {
   font-weight:300;
   margin-bottom:-.6em;
@@ -23,6 +52,10 @@ html, body {
 
 .app h5 {
   font-weight:200;
+}
+
+.app .name-city {
+  width: 10em;
 }
 
 .app .forecast .details h5 {
@@ -42,25 +75,7 @@ html, body {
   border-style:solid;
   border-width:0 10px 17.3px;
   border-color:transparent transparent rgba(255,255,255,0.2);
-  margin-left:1.5em
-}
-
-.app {
-  display:table;
-  margin:auto;
-  /*background-color: rgba(255, 255, 255, 0.1);*/
-  padding-top:5em;
-  padding-bottom:5em;
-  padding-left:10em;
-  padding-right:10em;
-
-
-    -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
+  margin-left:1.5em;
 }
 
 .information, .forecast {  
@@ -94,15 +109,18 @@ html, body {
   width:2em;
   margin-right:1.5em;
   background-color:rgba(255,255,255,0.1);
-  padding-left:1.25em;
-  padding-right:1.25em;
-  padding-top:2em;
-  padding-bottom:2em
+  padding-left: 0.2em;
+  padding-right:0.2em;
+  padding-top:1em;
+  padding-bottom:1em;
+  text-align: center;
 }
 
 .degree-summary {
   display:inline-block;
-  vertical-align:middle
+  vertical-align:middle;
+  float: left;
+  margin-left: -2em;
 }
 
 .details {
@@ -112,7 +130,7 @@ html, body {
 }
 
 .friend {
-  margin-bottom:1em;
+  margin-bottom:2.5em;
   color: white;
 }
 
@@ -142,19 +160,9 @@ html, body {
   display:none;
 }
 
-.uk-modal {
-  /*width: 100%;*/
-  /*height: 100%;*/
-  /*background-color: rgba(0, 0, 0, 0.5);*/
-}
-
 .pac-container {
     z-index: 10000 !important;
     position: absolute !important;
-}
-
-.the-basics {
-  text-align: center;
 }
 
 .add-modal h1 {
@@ -221,4 +229,11 @@ input:focus {
 .fa:hover {
     color: #fff;
     text-shadow: 4px 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.wi {
+  font-size: 2em;
+  /*padding: 0;*/
+  float: left;
+  color: white;
 }

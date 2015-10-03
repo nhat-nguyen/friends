@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app='you'>
 <head>
     <title>Friends</title>
     <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
@@ -9,11 +9,22 @@
     <script type="text/javascript" src="js/JSONP-min.js"></script>
 
     <script type="text/javascript" src="js/uikit.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+
+    <script type="text/javascript" src="js/tooltip.min.js"></script>
+
+    <link rel="stylesheet" href="css/tooltip.min.css">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/animate.min.css">
+    <link rel="stylesheet" href="css/weather-icons.min.css">
     <link rel="stylesheet" type="text/css" href="css/uikit.css">
+    <link rel="stylesheet" type="text/css" href="css/sortable.min.css">
+
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script type="text/javascript" src="js/sortable.min.js"></script>
+
 </head>
 <body>
     <script type="text/javascript">
@@ -25,52 +36,37 @@
             });
           };
         }
-
-        var getJSON = function(url, successHandler, errorHandler) {
-          var xmlHttp = new XMLHttpRequest();
-          xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState == 4) {
-                if (xmlHttp.status == 200) {
-                  successHandler(xmlHttp.responseText);
-                } else {
-                  errorHandler(xmlHttp.status);
-                }
-            }
-          };
-
-          xmlHttp.open('GET', url, true);
-          xmlHttp.send(null);
-        };
     </script>
 
-    <div class="app uk-cover">
-        <div class="friend">
+    <div ng-controller="FriendsListController as friends" class="app">
+        <div ng-repeat="friend in friends.friendList" on-finish-render="ngRepeatFinished" class="friend">
             <div class="information">
                 <img class="avatar" src="assets/avatar.png"/>
                 <div class="name-city">
-                    <h2>Bich Anh</h2>
-                    <h5>Rotterdam, Netherlands</h5>
+                    <h2>{{friend.name}}</h2>
+                    <h5>{{friend.location.city + ', ' + friend.location.country}}</h5>
                 </div>
                 <div class="date-time">
-                    <h2>5:36pm</h2>
-                    <h5>Saturday, September 5, 2015 (GMT+2)</h5>
+                    <h2>{{friend.now}}</h2>
+                    <h5>{{friend.today}}</h5>
                 </div>
             </div>
-
-
             <div class="forecast">
                 <div class="arrow"></div>
                 <div class="weather">
-                    <img class="weather-icon" src="assets/sunny.png">
+                    <i class="weather-icon wi {{friend.location.weather.icon}}"></i>
                     <div class="degree-summary">
-                        <h2>15&deg;</h2>
-                        <h5>Sunny</h5>
+                        <h2>{{friend.location.weather.temperature}}&#8451;</h2>
+                        <h5>{{friend.location.weather.summary}}</h5>
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
 
-        <div class="friend">
+
+
+
+<!--         <div class="friend">
             <div class="information">
                 <img class="avatar" src="assets/avatar.png"/>
                 <div class="name-city">
@@ -98,7 +94,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <div class="add-modal" id="animatedModal">
@@ -107,30 +103,34 @@
             <i type="submit" class="close-animatedModal fa fa-times-circle-o fa-3x"></i>
         </div>
 
-        <div class="modal-content">
+        <form ng-submit="friendCtrl.addFriend()" ng-controller="AddFriendsController as friendCtrl" class="modal-content" form-autofill-fix>
           <!--Your modal content goes here-->
-          <div id="the-basics">
-          <h1>What is your friend's name?</h1>
-          <input class="name" id="name" type="text" placeholder="Enter a name">
-          <h1>And where does he/she live?</h1>
-            <input class="typeahead" id="google" type="text">
-          </div>
-        </div>
+              <div id="the-basics">
+              <h1>What is your friend's name?</h1>
+              <input class="name" id="name" ng-model="friendCtrl.name" type="text" placeholder="Enter a name">
+              <h1>And where does he/she live?</h1>
+                <input class="typeahead" id="google" ng-model="friendCtrl.location" type="text">
+              </div>
+              <input type="submit" id="submit" value="Submit" />
+        </form>
+
     </div>
 
     <div class="add-button">
         <i href="#animatedModal" id="addFriends" type="submit" class="fa fa-plus-circle fa-3x"></i>
     </div>
 
+    <button class="uk-button" type="button" onclick="localStorage.clear()">Clear</button>
+
     <script type="text/javascript" src="js/animatedModal.min.js"></script>
     <script type="text/javascript" src="js/ui.bindings.js"></script>
-    <script type="text/javascript" src="js/google.js"></script>
     <script>
         $("#addFriends").animatedModal({
-            color: '#a388bf',
+            color: '#a7569b',
             animatedIn:'lightSpeedIn',
             animatedOut:'bounceOutDown',
         });
+        initAutoComplete('google');
     </script>
 </body>
 </html>
