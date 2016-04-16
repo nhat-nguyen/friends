@@ -49,7 +49,26 @@ var ICON = {
 
 
     app.service('FriendDatabase', ['$rootScope', function($rootScope) {
-        var friendList = (localStorage['friendList']) ? JSON.parse(localStorage['friendList']) : [];
+        var myFriends = '[{"name":"Bich Anh","location":{"city":"Rotterdam","country":"Netherlands","latitude":51.9244201,"longitude":4.477732500000002,"weather":{"temperature":9,"summary":"Mostly Cloudy","icon":"wi-day-cloudy"}},"timezone":"Europe/Amsterdam","now":"3:13:52 pm","today":"Wednesday, October 14th, 2015","avatar":"anh.png"},{"name":"Home","location":{"city":"Ho Chi Minh City","country":"Vietnam","latitude":10.8230989,"longitude":106.6296638,"weather":{"temperature":26,"summary":"Partly Cloudy","icon":"wi-day-cloudy"}},"timezone":"Asia/Saigon","now":"8:13:52 pm","today":"Wednesday, October 14th, 2015","avatar":"home.png"},{"name":"Hoang Nhat","location":{"city":"Waterloo","country":"Canada","latitude":43.4642578,"longitude":-80.5204096,"weather":{"temperature":8,"summary":"Mostly Cloudy","icon":"wi-day-cloudy"}},"timezone":"America/Toronto","now":"9:13:52 am","today":"Wednesday, October 14th, 2015","avatar":"nhat.png"}]'
+
+        var friendList = (localStorage['friendList']) ? JSON.parse(localStorage['friendList']) : JSON.parse(myFriends);
+        var weatherCounter = function() {
+            var updated = 0;
+            var total = friendList.length;
+
+            return {
+                increase: function() {
+                    updated += 1;
+                },
+                isFinished: function() {
+                    return updated === total;
+                },
+                reset: function() {
+                    updated = 0;
+                    total = friendList.length;
+                }
+            };
+        }();
 
         var updateTime = function() {
             now = moment();
@@ -68,10 +87,13 @@ var ICON = {
                             temperature: Math.round(json.currently.temperature),
                             summary: json.currently.summary,
                             icon: ICON[json.currently.icon]
-                        }
+                        };
                         console.dir(json);
-                        if (index == friendList.length - 1) {
-                            $rootScope.$broadcast('NewFriendAdded');
+                        weatherCounter.increase();
+                        if (weatherCounter.isFinished()) {
+                            $rootScope.$broadcast('WeatherUpdated');
+                            weatherCounter.reset();
+                            saveToLocal();
                         }
                     });
                 })(i);
@@ -126,6 +148,12 @@ var ICON = {
         this.friendList = FriendDatabase.getFriendList();
 
         $rootScope.$on('NewFriendAdded', function(event) {
+            $scope.$apply(function () {
+                thisController.friendList = FriendDatabase.getFriendList();
+            });
+        });
+
+        $rootScope.$on('WeatherUpdated', function(event) {
             $scope.$apply(function () {
                 thisController.friendList = FriendDatabase.getFriendList();
             });
